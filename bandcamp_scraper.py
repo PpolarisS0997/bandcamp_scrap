@@ -26,6 +26,12 @@ from playlist_generator import generate_playlist_html
 def main():
     load_dotenv()
 
+    # Nettoyer les caractères invisibles (espaces insécables, etc.) du .env
+    for key in ("EMAIL_ADDRESS", "EMAIL_PASSWORD", "IMAP_HOST", "IMAP_PORT", "IMAP_FOLDER"):
+        val = os.getenv(key)
+        if val:
+            os.environ[key] = val.replace("\xa0", "").strip()
+
     parser = argparse.ArgumentParser(
         description="Scrape les emails Bandcamp et génère une playlist HTML."
     )
